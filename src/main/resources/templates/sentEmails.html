@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Sent Emails</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+        th {
+            background: rgba(255,255,255,0.2);
+        }
+        tr:nth-child(even) {
+            background: rgba(255,255,255,0.05);
+        }
+        .navbar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        .navbar a:hover {
+            background: rgba(255,255,255,0.4);
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <a th:href="@{/emails}">Inbox</a>
+    <a th:href="@{/emails/compose}">Compose</a>
+    <a th:href="@{/logout}">Logout</a>
+</div>
+
+<h1>Sent Emails</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>To</th>
+        <th>Subject</th>
+        <th>Message Preview</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="email : ${sentEmails}">
+        <td th:text="${email.receiver.email}">receiver@example.com</td>
+        <td th:text="${email.subject}">Subject here</td>
+        <td th:text="${#strings.abbreviate(email.body, 40)}">Preview of message</td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(sentEmails)}">
+        <td colspan="3" style="text-align:center;">No sent emails found.</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

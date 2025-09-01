@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Inbox</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        margin: 0;
+        color: #fff;
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar h1 {
+        margin: 0;
+        font-size: 24px;
+    }
+
+    .nav-buttons a {
+        text-decoration: none;
+        margin-left: 15px;
+        padding: 10px 20px;
+        border-radius: 8px;
+        background: #ffffff30;
+        color: white;
+        font-weight: bold;
+        transition: background 0.3s ease;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .nav-buttons a:hover {
+        background: #ffffff60;
+    }
+
+    .inbox {
+        padding: 30px 60px;
+    }
+
+    .email {
+        background: rgba(255, 255, 255, 0.1);
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        backdrop-filter: blur(6px);
+        transition: background 0.3s ease;
+        cursor: pointer;
+    }
+
+    .email:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .email h3 {
+        margin: 0 0 10px;
+    }
+
+    .email p {
+        margin: 5px 0;
+    }
+
+    .email span {
+        font-size: 13px;
+        color: #ccc;
+    }
+  </style>
+</head>
+<body>
+<div class="navbar">
+  <h1>Your Inbox</h1>
+  <div class="nav-buttons">
+    <a th:href="@{/emails/compose}">Compose</a>
+    <a th:href="@{/emails/sent}">Sent Emails</a>
+    <a th:href="@{/logout}">Logout</a>
+  </div>
+</div>
+
+<div class="inbox">
+  <div th:each="email : ${emails}" class="email">
+    <a th:href="@{/emails/view/{id}(id=${email.id})}" style="color: inherit; text-decoration: none;">
+      <h3 th:text="${email.subject != null && !#strings.isEmpty(email.subject) ? email.subject : 'No Subject'}">Subject</h3>
+      <p>
+        <strong>From:</strong>
+        <span th:text="${email.sender != null && email.sender.email != null ? email.sender.email : 'Unknown sender'}">sender@example.com</span>
+      </p>
+      <p th:if="${email.sentAt != null}" th:text="${#temporals.format(email.sentAt, 'dd MMM yyyy HH:mm')}">Sent At</p>
+      <p th:unless="${email.sentAt != null}">No Date</p>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

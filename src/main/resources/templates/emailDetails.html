@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Email Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background: linear-gradient(135deg, #6a11cb, #2575fc);
+          margin: 0;
+          color: #fff;
+          padding: 40px;
+          display: flex;
+          justify-content: center;
+        }
+        .email-details {
+          background: rgba(255, 255, 255, 0.1);
+          padding: 30px 40px;
+          border-radius: 12px;
+          max-width: 700px;
+          width: 100%;
+          backdrop-filter: blur(6px);
+          box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+          word-wrap: break-word;
+          white-space: pre-wrap; /* preserve line breaks */
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+        }
+        .email-header {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+          padding-bottom: 16px;
+        }
+        .email-header span.label {
+          font-weight: 600;
+          color: #ddd;
+          margin-right: 6px;
+        }
+        h2.subject {
+          margin: 0;
+          font-weight: 700;
+          font-size: 1.5rem;
+          color: #fff;
+        }
+        .email-body {
+          font-size: 1rem;
+          line-height: 1.5;
+          color: #eee;
+          flex-grow: 1;
+          white-space: pre-wrap;
+        }
+        .email-footer {
+          text-align: right;
+          font-size: 0.9rem;
+          color: #ccc;
+          border-top: 1px solid rgba(255, 255, 255, 0.3);
+          padding-top: 16px;
+          font-style: italic;
+        }
+        a.back-link {
+          position: fixed;
+          top: 20px;
+          left: 40px;
+          color: white;
+          text-decoration: underline;
+          font-weight: 600;
+          font-size: 1rem;
+        }
+        a.back-link:hover {
+          color: #a0c4ff;
+        }
+    </style>
+</head>
+<body>
+<a th:href="@{/emails}" class="back-link">← Back to Inbox</a>
+
+<div class="email-details">
+    <div class="email-header">
+        <p>
+            <span class="label">From:</span>
+            <span th:text="${email.sender != null ? email.sender.email : 'Unknown'}">sender@example.com</span>
+        </p>
+        <p>
+            <span class="label">Subject:</span>
+            <span th:text="${email.subject != null ? email.subject : 'No Subject'}">No Subject</span>
+        </p>
+    </div>
+
+    <div class="email-body" th:text="${email.body != null ? email.body : 'No content available.'}">
+        Email body here...
+    </div>
+
+    <div class="email-footer">
+      <span>
+        <strong>Sent at:</strong>
+        <span th:if="${email.sentAt != null}" th:text="${#temporals.format(email.sentAt, 'dd MMM yyyy HH:mm')}">Timestamp</span>
+        <span th:unless="${email.sentAt != null}">No Date</span>
+      </span>
+    </div>
+</div>
+</body>
+</html>
